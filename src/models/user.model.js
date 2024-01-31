@@ -34,7 +34,7 @@ const userSchema = new Schema(
     },
 
     coverImage: {
-      type: String,
+      type: String, //cloudinary
     },
 
     watchHistory: [
@@ -58,6 +58,8 @@ const userSchema = new Schema(
   }
 );
 
+//this pre functions executes before saving the data 
+//bcrypt hashes the password before saving it
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
@@ -66,10 +68,13 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
+//this method compares the password given by user to the encrypted password to check if the password is correct or not
+
 userSchema.methods.isPasswordCorrect = async function (password) {
   return await bcrypt.compare(password, this.password);
 };
 
+//this is used to generate accessToken 
 userSchema.methods.generateAccessToken = function () {
   return jwt.sign(
     {
@@ -84,6 +89,8 @@ userSchema.methods.generateAccessToken = function () {
     }
   );
 };
+
+//to generate refreshToken
 userSchema.methods.generateRefreshToken = function () {
   return jwt.sign(
     {

@@ -6,7 +6,7 @@ import {app} from "./app.js"
 
 dotenv.config({
     path: './.env'
-})
+}) //to configure environment variables
 
 connectDB()
 .then(() => {

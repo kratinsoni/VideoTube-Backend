@@ -1,3 +1,6 @@
+//this code is also available on mongoDB docs we just wrapped the code in try catch block and made it a async function because
+//DATABASE IS ALWAYS IN ANOTHER CONTINENT
+
 import mongoose from "mongoose"
 import { DB_NAME } from "../constants.js"
 

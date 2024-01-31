@@ -6,6 +6,10 @@ const asyncHandler = (requestHandler) => {
 
 export { asyncHandler };
 
+
+//this utility function allows us to wrap functions in try catch block using a promise which we can use while writing other code in our backend
+
+
 // const asyncHandler = (fn) => async (req, res, next) => {
 //     try {
 //         await fn(req, res, next)
