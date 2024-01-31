@@ -7,13 +7,13 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 const generateAccessAndRefreshToken = async (userId) => {
   try {
     const user = await User.findById(userId);
-    const AccessToken = user.generateAccessToken();
-    const RefreshToken = user.generateRefreshToken();
+    const accessToken = user.generateAccessToken();
+    const refreshToken = user.generateRefreshToken();
 
-    user.refreshToken = RefreshToken;
+    user.refreshToken = refreshToken;
     await user.save({ validateBeforeSave: false });
 
-    return { AccessToken, RefreshToken };
+    return { accessToken, refreshToken };
   } catch (error) {
     throw new ApiError(
       500,
@@ -131,7 +131,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Password Incorrect");
   }
 
-  const { AccessToken, RefreshToken } = await generateAccessAndRefreshToken(
+  const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
   );
 
@@ -148,20 +148,20 @@ const loginUser = asyncHandler(async (req, res) => {
 
   return res
   .status(200)
-  .cookie("accessToken", AccessToken, options)
-  .cookie("refreshToken", RefreshToken, options)
+  .cookie("accessToken", accessToken, options)
+  .cookie("refreshToken", refreshToken, options)
   .json(
     new ApiResponse(
       200,
       {
-        user: loggedInUser, AccessToken, RefreshToken
+        user: loggedInUser, accessToken, refreshToken
       },
       "User Logged In Successfully"
     )
   )
 });
 
-const logoutUser  = asyncHandler( async(req, res) => {
+const logoutUser = asyncHandler( async(req, res) => {
   
   await User.findByIdAndUpdate(req.user._id, {
     $set: {
