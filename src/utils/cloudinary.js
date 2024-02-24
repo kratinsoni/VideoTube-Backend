@@ -1,4 +1,4 @@
-//this code can be taken from cloudinary documentation all we did was we used async handler utilitu and wraped it in a try catch and added a delete file method which deletes files from local storage once it is uploaded
+//this code can be taken from cloudinary documentation all we did was we used async handler utility and wraped it in a try catch and added a delete file method which deletes files from local storage once it is uploaded
 
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
