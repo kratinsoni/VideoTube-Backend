@@ -9,6 +9,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const getAllVideos = asyncHandler(async (req, res) => {
   const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
   //TODO: get all videos based on query, sort, pagination
+  
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
@@ -115,6 +116,12 @@ const updateVideo = asyncHandler(async (req, res) => {
 const deleteVideo = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: delete video
+
+  const response = await Video.deleteOne({ _id: videoId });
+
+  return res
+    .status(201)
+    .json(new ApiResponse(200, response, "Video deleted Successfully"));
 });
 
 const togglePublishStatus = asyncHandler(async (req, res) => {
