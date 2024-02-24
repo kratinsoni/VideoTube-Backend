@@ -20,9 +20,11 @@ app.use(cookieParser()); // setup to send and recieve cookies
 
 import userRouter from "./routes/user.routes.js"; //route to handle all user related tasks like login, register, logout etc
 import videoRouter from "./routes/video.routes.js";
+import commentRouter from "./routes/comment.routes.js"
 
 //routes declaration
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/videos", videoRouter);
+app.use("/api/v1/comments", commentRouter)
 
 export { app };
