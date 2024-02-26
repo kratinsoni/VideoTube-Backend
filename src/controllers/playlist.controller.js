@@ -54,7 +54,7 @@ const getUserPlaylists = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        user[0].getUserPlaylists,
+        user[0].userPlaylists,
         "Playlists Fetched SuccessFully"
       )
     );

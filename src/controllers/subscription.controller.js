@@ -54,7 +54,7 @@ const getUserChannelSubscribers = asyncHandler(async (req, res) => {
     .json(
       new ApiResponse(
         200,
-        subscribersList[0].Subscriptions[0].subsribers,
+        subscribersList[0].subscriptions,
         "Channel Subscribers fetched successfully"
       )
     );
@@ -77,12 +77,7 @@ const getSubscribedChannels = asyncHandler(async (req, res) => {
         foreignField: "Subscriber",
         as: "channelsSubscribed",
       },
-    },
-    {
-      $project: {
-        channelsSubscribed: 1,
-      },
-    },
+    }
   ]);
 
   return res
