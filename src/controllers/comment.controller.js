@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { isValidObjectId } from "mongoose";
 import { Comment } from "../models/comment.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -16,6 +16,14 @@ const addComment = asyncHandler(async (req, res) => {
   const { userId } = req.user._id;
   const { content } = req.body;
 
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid Video Id");
+  }
+
+  if (!content) {
+    throw new ApiError(400, "Content is Required");
+  }
+
   const comment = await Comment.create({
     content,
     owner: userId,
@@ -29,7 +37,7 @@ const addComment = asyncHandler(async (req, res) => {
   }
 
   return res
-    .status(201)
+    .status(200)
     .json(new ApiResponse(200, createdComment, "Comment added successfully"));
 });
 
@@ -38,10 +46,20 @@ const updateComment = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const { newContent } = req.body;
 
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment Id");
+  }
+
+  if (!newContent) {
+    throw new ApiError(400, "Content is Required");
+  }
+
   const comment = await Comment.findByIdAndUpdate(
     commentId,
     {
-      content: newContent,
+      $set: {
+        content: newContent,
+      },
     },
     {
       new: true,
@@ -59,11 +77,15 @@ const deleteComment = asyncHandler(async (req, res) => {
   // TODO: delete a comment
   const { commentId } = req.params;
 
-  const response = await Comment.deleteOne({ _id: commentId });
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment Id");
+  }
+
+  const response = await Comment.findByIdAndDelete(commentId);
 
   return res
     .status(200)
-    .json(new ApiResponse(200, response, "Comment Deleted"));
+    .json(new ApiResponse(200, response, "Comment Deleted SuccessFully"));
 });
 
 export { getVideoComments, addComment, updateComment, deleteComment };
