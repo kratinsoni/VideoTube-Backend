@@ -2,6 +2,7 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import { ApiError } from "./ApiError";
 
 cloudinary.config({
   //sensitive information of cloudinary cloud which it kept in .env file
@@ -27,6 +28,20 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export { uploadOnCloudinary };
+export const deleteFromCloudinary = async (resourceId) => {
+  console.log("deleting the file");
+  console.log(resourceId);
+
+  try {
+    if (!resourceId) return null;
+
+    const response = await cloudinary.uploader.destroy(resourceId);
+    return response;
+  } catch (error) {
+    throw new ApiError(500, "Couldn't delete file from cloudinary");
+  }
+};
+
+export { uploadOnCloudinary, deleteFromCloudinary };
 
 //this is cloudinary code on which we upload our files like images because it is not recommended to store such data on normal database like mongoDB
