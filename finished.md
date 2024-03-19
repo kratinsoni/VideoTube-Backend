@@ -18,3 +18,7 @@
 16. video - updateVideo
 17. video - deleteVideo
 18. video - togglePublishStatus
+19. Like - toggleVideoLike
+20. Like - toggleCommentLike
+21. Like - toggleTweetLike
+22. Like - getAllLikedVideos
