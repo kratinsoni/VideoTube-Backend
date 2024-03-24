@@ -46,9 +46,9 @@ const updateComment = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   const { newContent } = req.body;
 
-  if (!isValidObjectId(commentId)) {
-    throw new ApiError(400, "Invalid comment Id");
-  }
+  // if (!isValidObjectId(commentId)) {
+  //   throw new ApiError(400, "Invalid comment Id");
+  // }
 
   if (!newContent) {
     throw new ApiError(400, "Content is Required");
@@ -70,7 +70,9 @@ const updateComment = asyncHandler(async (req, res) => {
     throw new ApiError(400, "failed to update Comment");
   }
 
-  return res.status(200).json(200, comment, "Comment Updated Successfully");
+  return res
+    .status(200)
+    .json(new ApiResponse(200, comment, "Comment Updated Successfully"));
 });
 
 const deleteComment = asyncHandler(async (req, res) => {

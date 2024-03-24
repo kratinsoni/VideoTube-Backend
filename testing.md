@@ -18,10 +18,10 @@
 
 1. getAllVideos -
 2. publishAVideo - WORKING ♥
-3. getVideoById -
+3. getVideoById -WORKING ♥
 4. updateVideo -
-5. deleteVideo -
-6. togglePublishStatus -
+5. deleteVideo - WORKING ♥
+6. togglePublishStatus - WORKING ♥
 
 # subscription
 
@@ -55,5 +55,5 @@
 
 1. getVideoComments -
 2. addComment - WORKING ♥
-3. updateComment -
-4. deleteComment -
+3. updateComment - WORKING ♥
+4. deleteComment - WORKING ♥

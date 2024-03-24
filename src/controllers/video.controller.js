@@ -112,7 +112,7 @@ const updateVideo = asyncHandler(async (req, res) => {
   const thumbnailLocalPath = req.files?.thumbnail?.[0].path;
 
   if (!thumbnailLocalPath) {
-    throw new ApiError(400, "thumbnail is Required");
+    throw new ApiError(400, "thumbnail is Required local path");
   }
 
   const videoThum = await Video.findById(videoId);
