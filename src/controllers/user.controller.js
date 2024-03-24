@@ -45,8 +45,7 @@ const registerUser = asyncHandler(async (req, res) => {
   //     throw new ApiError(400, "fullName is Required")
   // }
 
-
-  //checking if the fields are empty 
+  //checking if the fields are empty
   if (
     [fullName, password, username, password].some(
       (field) => field?.trim() === ""
@@ -82,7 +81,7 @@ const registerUser = asyncHandler(async (req, res) => {
     throw new ApiError(400, "avatar is Required");
   }
 
-  //uploading avatar and coverImage on cloudinary 
+  //uploading avatar and coverImage on cloudinary
   const avatar = await uploadOnCloudinary(avatarLocalPath);
   const coverImage = await uploadOnCloudinary(coverImageLocalPath);
 
@@ -99,7 +98,6 @@ const registerUser = asyncHandler(async (req, res) => {
     password,
     username: username.toLowerCase(),
   });
-
 
   const createdUser = await User.findById(user._id).select(
     "-password -refreshToken"
@@ -125,11 +123,10 @@ const loginUser = asyncHandler(async (req, res) => {
   //send cookies
   //response
 
-
   //getting data
   const { email, username, password } = req.body;
 
-  if (!(username) || !(email)) {
+  if (!username && !email) {
     throw new ApiError(200, "username or email is required");
   }
 
@@ -149,7 +146,7 @@ const loginUser = asyncHandler(async (req, res) => {
     throw new ApiError(401, "Password Incorrect");
   }
 
-  //putting access and refresh Token 
+  //putting access and refresh Token
   const { accessToken, refreshToken } = await generateAccessAndRefreshToken(
     user._id
   );
@@ -289,7 +286,7 @@ const updateAccoutDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "All Fields are required");
   }
 
-  const user = User.findByIdAndUpdate(
+  const user = await User.findByIdAndUpdate(
     req.user?._id,
     {
       $set: {

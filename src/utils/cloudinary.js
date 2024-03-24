@@ -2,7 +2,7 @@
 
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
-import { ApiError } from "./ApiError";
+import { ApiError } from "./ApiError.js";
 
 cloudinary.config({
   //sensitive information of cloudinary cloud which it kept in .env file
@@ -28,7 +28,7 @@ const uploadOnCloudinary = async (localFilePath) => {
   }
 };
 
-export const deleteFromCloudinary = async (resourceId) => {
+const deleteFromCloudinary = async (resourceId) => {
   console.log("deleting the file");
   console.log(resourceId);
 
@@ -38,7 +38,7 @@ export const deleteFromCloudinary = async (resourceId) => {
     const response = await cloudinary.uploader.destroy(resourceId);
     return response;
   } catch (error) {
-    throw new ApiError(500, "Couldn't delete file from cloudinary");
+    throw new ApiError(400, "Couldn't delete file from cloudinary");
   }
 };
 

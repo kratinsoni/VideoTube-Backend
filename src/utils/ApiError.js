@@ -1,11 +1,8 @@
 class ApiError extends Error {
-
-  //making a contructor this is called whenever a new object is initiated using this ApiError class
-
   constructor(
-    statusCode, //codes likes 200, 400, 401, 400
-    message = "Something went wrong", 
-    errors = [], 
+    statusCode,
+    message = "Something went wrong",
+    errors = [],
     stack = ""
   ) {
     super(message);
@@ -24,5 +21,3 @@ class ApiError extends Error {
 }
 
 export { ApiError };
-
-// this class utilises Error class from node.js which helps us to send custom errors to determine whats the error like sending errors with status code and message etc

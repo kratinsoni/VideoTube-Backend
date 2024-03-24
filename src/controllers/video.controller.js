@@ -61,7 +61,7 @@ const publishAVideo = asyncHandler(async (req, res) => {
     owner: req.user._id,
   });
 
-  const createdVideo = await video.findById(video._id);
+  const createdVideo = await Video.findById(video._id);
 
   if (!createdVideo) {
     throw new ApiError(500, "Something Went Wrong While creating the video");

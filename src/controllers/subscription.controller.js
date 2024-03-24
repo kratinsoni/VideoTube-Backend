@@ -8,107 +8,71 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 const toggleSubscription = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
   // TODO: toggle subscription
-
-  if (!isValidObjectId(channelId)) {
-    throw new ApiError(404, "Channel does not exist");
-  }
-
-  const channel = await User.findById(channelId);
-
-  if (!channel) {
-    throw new ApiError(404, "Channel does not exist");
-  }
-
-  const userId = req.user._id;
-  let subscribe, unsubscribe;
-
-  const userIsSubscribed = await Subscription.find({
-    channel: channelId,
-    subscriber: userId,
-  });
-
-  if (!userIsSubscribed) {
-    subscribe = await Subscription.create({
-      channel: channelId,
-      subscriber: userId,
-    });
-
-    if (!subscribe) {
-      throw new ApiError(
-        500,
-        "Something went wrong while subscribing to the channel"
-      );
-    }
-  } else {
-    unsubscribe = await Subscription.findOneAndDelete({
-      channel: channelId,
-      subscriber: userId,
-    });
-
-    if (!unsubscribe) {
-      throw new ApiError(500, "Something went wrong while unsubscribing");
-    }
-  }
-
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        subscribe || unsubscribe,
-        "Subscribed or unSubscribed successfully"
-      )
-    );
 });
 
 // controller to return subscriber list of a channel
 const getUserChannelSubscribers = asyncHandler(async (req, res) => {
   const { channelId } = req.params;
 
-  const subscribersList = await User.aggregate([
+  // if (!isValidObjectId(channelId)) {
+  //   throw new ApiError(404, "Channel not found");
+  // }
+
+  const subscribers = await Subscription.aggregate([
     {
       $match: {
-        _id: new mongoose.Types.ObjectId(channelId),
+        channel: new mongoose.Types.ObjectId(channelId),
       },
     },
     {
       $lookup: {
-        from: "subscriptions",
-        localField: "_id",
-        foreignField: "channel",
-        as: "subscriptions",
-        pipeline: [
-          {
-            $lookup: {
-              from: "users",
-              localField: "subscriber",
-              foreignField: "_id",
-              as: "subscribers",
-              pipeline: [
-                {
-                  $project: {
-                    fullName: 1,
-                    avatar: 1,
-                    username: 1,
-                  },
-                },
-              ],
-            },
-          },
-        ],
+        from: "users",
+        localField: "subscriber",
+        foreignField: "_id",
+        as: "subscribers",
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        channel: 1,
+        subscriber: 1,
+        createdAt: 1,
+        updatedAt: 1,
+        subscribers: {
+          $arrayElemAt: ["$subscribers", 0],
+        },
+      },
+    },
+    {
+      $project: {
+        _id: 1,
+        subscriber: 1,
+        channel: 1,
+        subscribers: {
+          username: 1,
+          avatar: 1,
+        },
+        createdAt: 1,
+        updatedAt: 1,
       },
     },
   ]);
 
-  return res
-    .status(200)
-    .json(
-      new ApiResponse(
-        200,
-        subscribersList[0].subscriptions,
-        "Channel Subscribers fetched successfully"
-      )
-    );
+  if (!subscribers) {
+    throw new ApiError(404, "The channel does not exist");
+  }
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        numOfSubscribers: subscribers.length,
+        subscribers,
+      },
+      "Creating a function to get a channel's subscriber"
+    )
+  );
 });
 
 // controller to return channel list to which user has subscribed

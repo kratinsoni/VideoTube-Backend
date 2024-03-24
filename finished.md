@@ -22,3 +22,9 @@
 20. Like - toggleCommentLike
 21. Like - toggleTweetLike
 22. Like - getAllLikedVideos
+
+# Remaining
+
+1. Comment - getVideoComments
+2. Dashboard - getChannelStats
+3. Video - getAllVideos
