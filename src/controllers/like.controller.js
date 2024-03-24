@@ -3,51 +3,124 @@ import { Like } from "../models/like.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
+import { Video } from "../models/video.model.js";
+import { Comment } from "../models/comment.model.js";
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
   //TODO: toggle like on video
 
-  let like;
+  if (!isValidObjectId(videoId)) {
+    throw new ApiError(400, "Invalid Video Id");
+  }
 
-  if (await Like.find({ video: videoId })) {
-    await Like.delete({ video: videoId });
+  // validate video Id by checking if video exists or not
+  const video = await Video.findById(videoId);
+
+  if (!video) {
+    throw new ApiError(404, "Video does not exist");
+  }
+
+  // get user who liked
+  const user = req.user._id;
+
+  if (!user) {
+    throw new ApiError(404, "The user who liked or unliked does not exist");
+  }
+
+  let like, unlike;
+
+  const isLiked = await Like.findOne({
+    video: videoId,
+    likedBy: user._id,
+  });
+
+  // video already has a like -> unlike
+  if (isLiked) {
+    unlike = await Like.deleteOne({
+      video: videoId,
+    });
+
+    if (!unlike) {
+      throw new ApiError(500, "Something went wrong while unliking the video");
+    }
   } else {
+    // if not liked -> like
     like = await Like.create({
       video: videoId,
-      likedBy: req.user._id,
+      likedBy: user._id,
     });
+
+    if (!like) {
+      throw new ApiError(500, "Something went wrong while liking the video");
+    }
   }
 
-  if (!like) {
-    throw new ApiError(500, "Something went wrong while creating like");
-  }
   return res
     .status(200)
-    .json(new ApiResponse(200, like, "Like Toggled successfully"));
+    .json(
+      new ApiResponse(200, like || unlike, "Toggled Video like successfully")
+    );
 });
 
 const toggleCommentLike = asyncHandler(async (req, res) => {
   const { commentId } = req.params;
   //TODO: toggle like on comment
 
-  let like;
+  if (!isValidObjectId(commentId)) {
+    throw new ApiError(400, "Invalid comment Id");
+  }
 
-  if (await Like.find({ comment: commentId })) {
-    await Like.delete({ comment: commentId });
+  // validate comment Id by checking if comment exists or not
+  const comment = await Comment.findById(commentId);
+
+  if (!comment) {
+    throw new ApiError(404, "comment does not exist");
+  }
+
+  // get user who liked
+  const user = req.user._id;
+
+  if (!user) {
+    throw new ApiError(404, "The user who liked or unliked does not exist");
+  }
+
+  let like, unlike;
+
+  const isLiked = await Like.findOne({
+    comment: commentId,
+    likedBy: user._id,
+  });
+
+  // comment already has a like -> unlike
+  if (isLiked) {
+    unlike = await Like.deleteOne({
+      comment: commentId,
+    });
+
+    if (!unlike) {
+      throw new ApiError(
+        500,
+        "Something went wrong while unliking the comment"
+      );
+    }
   } else {
+    // if not liked -> like
     like = await Like.create({
       comment: commentId,
-      likedBy: req.user._id,
+      likedBy: user._id,
     });
+
+    if (!like) {
+      throw new ApiError(500, "Something went wrong while liking the comment");
+    }
   }
 
-  if (!like) {
-    throw new ApiError(500, "Something went wrong while creating like");
-  }
   return res
     .status(200)
-    .json(new ApiResponse(200, like, "Like Toggled successfully"));
+    .json(
+      new ApiResponse(200, like || unlike, "Toggled comment like successfully")
+    );
 });
 
 const toggleTweetLike = asyncHandler(async (req, res) => {

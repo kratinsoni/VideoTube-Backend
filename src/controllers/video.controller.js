@@ -109,7 +109,9 @@ const updateVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "description is Required");
   }
 
-  const thumbnailLocalPath = req.files?.thumbnail?.[0].path;
+  const thumbnailLocalPath = req.files?.thumbnail?.[0]?.path;
+
+  console.log(thumbnailLocalPath);
 
   if (!thumbnailLocalPath) {
     throw new ApiError(400, "thumbnail is Required local path");
@@ -124,7 +126,7 @@ const updateVideo = asyncHandler(async (req, res) => {
     throw new ApiError(400, "thumbnail required cloudinary");
   }
 
-  const video = await Video.findByIdandUpdate(
+  const video = await Video.findByIdAndUpdate(
     videoId,
     {
       $set: {

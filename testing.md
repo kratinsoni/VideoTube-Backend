@@ -19,7 +19,7 @@
 1. getAllVideos -
 2. publishAVideo - WORKING ♥
 3. getVideoById -WORKING ♥
-4. updateVideo -
+4. updateVideo - WORKING ♥
 5. deleteVideo - WORKING ♥
 6. togglePublishStatus - WORKING ♥
 
@@ -41,8 +41,8 @@
 
 # like
 
-1. toggleVideoLike -
-2. toggleCommentLike -
+1. toggleVideoLike - WORKING ♥
+2. toggleCommentLike - WORKING ♥
 3. toggleTweetLike -
 4. getLikedVideos -
 
