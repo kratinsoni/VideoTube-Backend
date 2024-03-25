@@ -5,6 +5,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { Video } from "../models/video.model.js";
 import { Comment } from "../models/comment.model.js";
+import { Tweet } from "../models/tweet.model.js";
 
 const toggleVideoLike = asyncHandler(async (req, res) => {
   const { videoId } = req.params;
@@ -127,23 +128,57 @@ const toggleTweetLike = asyncHandler(async (req, res) => {
   const { tweetId } = req.params;
   //TODO: toggle like on tweet
 
-  let like;
+  if (!isValidObjectId(tweetId)) {
+    throw new ApiError(400, "Invalid comment Id");
+  }
 
-  if (await Like.find({ tweet: tweetId })) {
-    await Like.delete({ tweet: tweetId });
+  // validate tweet Id by checking if tweet exists or not
+  const tweet = await Tweet.findById(tweetId);
+
+  if (!tweet) {
+    throw new ApiError(404, "tweet does not exist");
+  }
+
+  // get user who liked
+  const user = req.user._id;
+
+  if (!user) {
+    throw new ApiError(404, "The user who liked or unliked does not exist");
+  }
+
+  let like, unlike;
+
+  const isLiked = await Like.findOne({
+    tweet: tweetId,
+    likedBy: user._id,
+  });
+
+  // tweet already has a like -> unlike
+  if (isLiked) {
+    unlike = await Like.deleteOne({
+      tweet: tweetId,
+    });
+
+    if (!unlike) {
+      throw new ApiError(500, "Something went wrong while unliking the tweet");
+    }
   } else {
+    // if not liked -> like
     like = await Like.create({
       tweet: tweetId,
-      likedBy: req.user._id,
+      likedBy: user._id,
     });
+
+    if (!like) {
+      throw new ApiError(500, "Something went wrong while liking the tweet");
+    }
   }
 
-  if (!like) {
-    throw new ApiError(500, "Something went wrong while creating like");
-  }
   return res
     .status(200)
-    .json(new ApiResponse(200, like, "Like Toggled successfully"));
+    .json(
+      new ApiResponse(200, like || unlike, "Toggled tweet like successfully")
+    );
 });
 
 const getLikedVideos = asyncHandler(async (req, res) => {
@@ -161,9 +196,11 @@ const getLikedVideos = asyncHandler(async (req, res) => {
   return res
     .status(200)
     .json(
-      200,
-      { numOfVideos: videos.length, videos },
-      "Liked videos Fetched Successfully"
+      new ApiResponse(
+        200,
+        { numOfVideos: videos.length, videos },
+        "Liked videos Fetched Successfully"
+      )
     );
 });
 

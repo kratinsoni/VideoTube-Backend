@@ -31,20 +31,20 @@
 
 # playlist
 
-1. createPlaylist -
-2. getUserPlaylists -
-3. getPlaylistById -
-4. addVideoToPlaylist -
-5. removeVideoFromPlaylist -
-6. deletePlaylist -
-7. updatePlaylist -
+1. createPlaylist - WORKING ♥
+2. getUserPlaylists - WORKING ♥
+3. getPlaylistById - WORKING ♥
+4. addVideoToPlaylist - WORKING ♥
+5. removeVideoFromPlaylist - WORKING ♥
+6. deletePlaylist - WORKING ♥
+7. updatePlaylist - WORKING ♥
 
 # like
 
 1. toggleVideoLike - WORKING ♥
 2. toggleCommentLike - WORKING ♥
-3. toggleTweetLike -
-4. getLikedVideos -
+3. toggleTweetLike - WORKING ♥
+4. getLikedVideos - WORKING ♥
 
 # dashboard
 
@@ -57,3 +57,10 @@
 2. addComment - WORKING ♥
 3. updateComment - WORKING ♥
 4. deleteComment - WORKING ♥
+
+# tweet
+
+1. createTweet - WORKING ♥
+2. getUserTweets - WORKING ♥
+3. updateTweet - WORKING ♥
+4. deleteTweet - WORKING ♥
