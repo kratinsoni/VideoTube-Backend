@@ -48,8 +48,8 @@
 
 # dashboard
 
-1. getChannelStats -
-2. getChannelVideos -
+1. getChannelStats - WORKING ♥
+2. getChannelVideos - WORKING ♥
 
 # comment
 
