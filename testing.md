@@ -16,7 +16,7 @@
 
 # video
 
-1. getAllVideos -
+1. getAllVideos - WORKING ♥
 2. publishAVideo - WORKING ♥
 3. getVideoById -WORKING ♥
 4. updateVideo - WORKING ♥
@@ -25,9 +25,9 @@
 
 # subscription
 
-1. toggleSubscription -
-2. getUserChannelSubscribers -
-3. getSubscribedChannels -
+1. toggleSubscription - WORKING ♥
+2. getUserChannelSubscribers - WORKING ♥
+3. getSubscribedChannels - WORKING ♥
 
 # playlist
 
@@ -53,7 +53,7 @@
 
 # comment
 
-1. getVideoComments -
+1. getVideoComments - WORKING ♥
 2. addComment - WORKING ♥
 3. updateComment - WORKING ♥
 4. deleteComment - WORKING ♥

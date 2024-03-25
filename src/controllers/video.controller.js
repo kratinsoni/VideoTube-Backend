@@ -10,8 +10,74 @@ import {
 } from "../utils/cloudinary.js";
 
 const getAllVideos = asyncHandler(async (req, res) => {
-  const { page = 1, limit = 10, query, sortBy, sortType, userId } = req.query;
   //TODO: get all videos based on query, sort, pagination
+
+  let {
+    page = 1,
+    limit = 10,
+    query,
+    sortBy = "createdAt",
+    sortType = 1, // Ascending
+    userId,
+  } = req.query;
+
+  // Converting string to interger
+  page = Number.parseInt(page);
+  limit = Number.parseInt(limit);
+
+  // Validation
+  if (!Number.isFinite(page)) {
+    throw new ApiError(404, "Page number should be integer");
+  }
+
+  if (!Number.isFinite(limit)) {
+    throw new ApiError(404, "Video limit should be integer");
+  }
+
+  if (!query.trim()) {
+    throw new ApiError(404, "Query is required");
+  }
+
+  // getting user
+  const user = await User.findById(userId);
+
+  if (!user._id) {
+    throw new ApiError(404, "User not found");
+  }
+
+  // getting videos
+  const allVideos = await Video.aggregate([
+    {
+      $match: {
+        owner: user._id,
+        title: {
+          $regex: query.trim(),
+          $options: "i",
+        },
+      },
+    },
+    {
+      $sort: {
+        [sortBy]: sortType,
+      },
+    },
+  ]);
+
+  const videos = await Video.aggregatePaginate(Video.aggregate(allVideos), {
+    page,
+    limit,
+  });
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      {
+        numOfVideos: videos.length,
+        videos,
+      },
+      "Testing get All Videos"
+    )
+  );
 });
 
 const publishAVideo = asyncHandler(async (req, res) => {
