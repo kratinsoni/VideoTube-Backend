@@ -2,4 +2,6 @@ node_modules/
 .npm
 testing.md/
 finished.md/
-.env/
+
+# Secret
+.env
