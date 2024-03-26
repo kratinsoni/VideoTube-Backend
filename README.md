@@ -27,6 +27,7 @@ Welcome to VideoTube Backend! This project provides the backend infrastructure f
    `npm install`
 
 3. Dependencies used:
+
    ```
    bcrypt
    cloudinary
@@ -39,6 +40,9 @@ Welcome to VideoTube Backend! This project provides the backend infrastructure f
    mongoose-aggregate-paginate
    multer
    ```
+
+4. To Run the Project use Command:
+   `npm run dev`
 
 ## Credits
 
