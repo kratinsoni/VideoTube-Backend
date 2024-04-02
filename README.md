@@ -20,15 +20,22 @@ Welcome to VideoTube Backend! This project provides the backend infrastructure f
 ## Setup
 
 1. Clone the repository:
+
    ```
    git clone https://github.com/yourusername/videotube-backend.git
    ```
-2. Install dependencies:
+
+2. Setup your .env files : I have given a sample file so rename it to .env and fill all the links
+
+3. Install dependencies:
    `npm install`
 
-3. Setup your .env files : I have given a sample file so rename it to .env and fill all the links
+4. To Run the Project use Command:
+   `npm run dev`
 
-4. Install Other dependencies:
+5. Install Other dependencies: (temporary)
+
+   CAUTION:- only install these dependencies if these are not installed by command `npm i` first try to run the program without installing these by first setting up .env file and running command `npm i` and if then it doesnt work try installing these dependencies temporary
 
    ```
    npm i -D nodemon
@@ -40,9 +47,6 @@ Welcome to VideoTube Backend! This project provides the backend infrastructure f
    npm i cloudinary
    npm i multer
    ```
-
-5. To Run the Project use Command:
-   `npm run dev`
 
 ## Credits
 
