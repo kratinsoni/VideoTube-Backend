@@ -26,22 +26,22 @@ Welcome to VideoTube Backend! This project provides the backend infrastructure f
 2. Install dependencies:
    `npm install`
 
-3. Dependencies used:
+3. Setup your .env files : I have given a sample file so rename it to .env and fill all the links
+
+4. Install Other dependencies:
 
    ```
-   bcrypt
-   cloudinary
-   cookie-parser
-   cors
-   dotenv
-   express
-   jsonwebtoken
-   mongoose
-   mongoose-aggregate-paginate
-   multer
+   npm i -D nodemon
+   npm i -D prettier
+   npm i mongoose express dotenv
+   npm i cookie-parser cors
+   npm i mongoose-aggregate-paginate-v2
+   npm i bcrypt jsonwebtoken
+   npm i cloudinary
+   npm i multer
    ```
 
-4. To Run the Project use Command:
+5. To Run the Project use Command:
    `npm run dev`
 
 ## Credits
